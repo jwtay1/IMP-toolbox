@@ -38,7 +38,22 @@ if ~exist('bfopen','file')
         'Could not find the bfopen function. Make sure the Bio-Formats library is installed and on the search path. See HELP for more details.');
 end    
 
-data = bfopen(filename);    %Open the ND2 file
+
+%Get file information
+reader = bgGetReader(filename);
+
+nImages = reader.getImageCount;
+nSeries = reader.getSeriesCount;
+nChannels = reader.getSizeC;
+nPlanes = reader.getSizeT;
+
+imgnRows = reader.getSizeY;     %height
+imgnCols = reader.getSizeX;     %width
+
+nZstack = reader.getSizeZ;      %depth
+
+
+%data = bfopen(filename);    %Open the ND2 file
 
 %Extract the raw data
 nSeries = size(data,1);

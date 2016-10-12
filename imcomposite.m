@@ -67,7 +67,6 @@ for ii = 1:numel(varargin)
             if ii == 1
                 alpha = 1;
                 composite_mode = 'blend';
-                
             end
                             
             switch lower(composite_mode)
@@ -87,9 +86,6 @@ for ii = 1:numel(varargin)
                     rgb(:,:,3) = rgb(:,:,3) ./ imdata;
                     
             end
-            
-            
-            
             
             
         else
@@ -123,8 +119,6 @@ for ii = 1:numel(varargin)
             
             
         end
-        
-        
     end
 end
 
