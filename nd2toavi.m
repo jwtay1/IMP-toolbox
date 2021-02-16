@@ -12,22 +12,41 @@ else
     channel = 1;
 end
 
-vid = VideoWriter([file(1:end-4), '.avi']);
-vid.FrameRate = 7;
-open(vid);
+
 
 bfr = BioformatsImage(file);
 
 % tempImg = bfr.getPlane(1, channel, bfr.sizeT);
 % maxInt = double(max(tempImg(:)));
-
-for iT = 1:bfr.sizeT
-    img = double(bfr.getPlane(1, channel, iT));
-    img = img ./ max(img(:));
+for iS = 1:bfr.seriesCount
     
-    writeVideo(vid, img);
+    bfr.series = iS;
+    
+    %Output fn
+    fnout = [file(1:end - 4), '_s', int2str(iS), '.avi'];
+    vid = VideoWriter(fnout);
+    vid.FrameRate = 7;
+    open(vid);
+    
+    for iT = 1:bfr.sizeT
+        
+        img = double(getPlane(bfr, 1, channel, iT, 'ROI', [764 223 1100 700]));
+%         
+%         if iT == 1
+%             prevImage = img;
+%         else
+%             pxShift = CyTracker.xcorrreg(prevImage, img);
+%             img = CyTracker.shiftimg(img, pxShift);
+%             prevImage = img;
+%         end
+        
+        img = img ./ max(img(:));
+        
+        img = imresize(img, 2, 'nearest');
+        
+        writeVideo(vid, img);
+    end
 end
-
 close(vid);
 
 end
